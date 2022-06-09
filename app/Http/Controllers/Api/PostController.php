@@ -3,11 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Repositories\Post\PostRepository;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    protected $repository;
+
+    public function __construct(PostRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +25,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        return response([
+            "posts" => $this->repository->all(),
+        ]);
     }
 
     /**
@@ -24,9 +36,8 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        //
     }
 
     /**
@@ -37,7 +48,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return response([
+            "post" => $post,
+        ]);
     }
 
     /**
@@ -47,9 +60,13 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $updatedPost = $this->repository->update($request->all(), $post);
+
+        return response([
+            "post" => $updatedPost,
+        ]);
     }
 
     /**
@@ -60,6 +77,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $this->repository->delete($post);
+
+        return response([
+            "message" => "Post deleted successfully",
+        ]);
     }
 }

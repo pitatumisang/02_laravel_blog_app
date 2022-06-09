@@ -6,7 +6,6 @@
 </div>
 
     <main class="rounded-lg mt-6 flex gap-4">
-
         <section class="w-[65%]">
 
             @forelse($posts as $post)
@@ -76,6 +75,10 @@
                     <p class="text-xl font-semibold">There are no posts yet!</p>
                 </div>
             @endforelse
+
+            <div class="mt-4 mb-6">
+                {{ $posts->links() }}
+            </div>
 
         </section>
         <aside class="h-fit w-[35%] bg-white rounded-lg p-4 border border-borderColor ">

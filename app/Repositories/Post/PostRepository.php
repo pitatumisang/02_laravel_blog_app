@@ -8,7 +8,7 @@ class PostRepository implements PostRepositoryInterface
 {
     public function all()
     {
-        return Post::orderBy("updated_at", "desc")->get();
+        return Post::orderBy("updated_at", "desc")->paginate(5);
     }
 
     public function find($id)
@@ -26,7 +26,7 @@ class PostRepository implements PostRepositoryInterface
     public function update(array $attributes, $post)
     {
         // TODO: Implement update() method.
-        $post->update($attributes);
+        return $post->update($attributes);
     }
 
     public function delete($post)
