@@ -30,17 +30,14 @@ Route::resource("/posts", PostController::class)->middleware([
 ]);
 
 /*-----Comments routes-----*/
-Route::post("/posts/{post}/comment", [CommentsController::class, "store"])
-    ->middleware(["auth", "verified"])
-    ->name("comments.store");
+Route::middleware(["auth", "verified"])->group(function () {
+    Route::post("/posts/{post}/comment", [
+        CommentsController::class,
+        "store",
+    ])->name("comments.store");
 
-Route::delete("/posts/comments/{comment}", [
-    CommentsController::class,
-    "destroy",
-])
-    ->middleware(["auth", "verified"])
-    ->name("comments.destroy");
-
-//Route::middleware(['auth','verified'])->group(function (){
-//
-//});
+    Route::delete("/posts/comments/{comment}", [
+        CommentsController::class,
+        "destroy",
+    ])->name("comments.destroy");
+});
